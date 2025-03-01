@@ -6,4 +6,4 @@ COPY . .
 RUN npm run build
 RUN npm install -g pm2
 EXPOSE 8080
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
