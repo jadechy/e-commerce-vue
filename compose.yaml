@@ -1,0 +1,101 @@
+services:
+  mongodb-auth:
+    image: mongo:latest
+    container_name: mongodb-auth
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_auth:/data/db
+    networks:
+      - ecom_network
+
+  mongodb-product:
+    image: mongo:latest
+    container_name: mongodb-product
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data_product:/data/db
+    networks:
+      - ecom_network
+
+  mongodb-order:
+    image: mongo:latest
+    container_name: mongodb-order
+    restart: always
+    ports:
+      - "27019:27017"  # MongoDB port expo
+    volumes:
+      - mongodb_data_order:/data/db
+    networks:
+      - ecom_network
+
+  auth-service:
+    build: ./services/auth-service/
+    container_name: auth-service
+    restart: always
+    env_file:
+      - ./services/auth-service/.env
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGO_URI=${MONGODB_URI}
+    depends_on:
+      - mongodb-auth
+    networks:
+      - ecom_network
+
+  product-service:
+    build: ./services/product-service/
+    container_name: product-service
+    restart: always
+    env_file:
+      - ./services/product-service/.env
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=${MONGODB_URI}
+    depends_on:
+      - mongodb-product
+    networks:
+      - ecom_network
+
+  order-service:
+    build: ./services/order-service/
+    container_name: order-service
+    restart: always
+    env_file:
+      - ./services/order-service/.env
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGO_URI=${MONGODB_URI}
+    depends_on:
+      - mongodb-order
+    networks:
+      - ecom_network
+
+  frontend:
+    build: ./frontend/
+    container_name: frontend
+    restart: always
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "8080:8080"
+    networks:
+      - ecom_network
+
+networks:
+  ecom_network:
+    driver: bridge
+
+volumes:
+  mongodb_data_auth:
+    driver: local
+  mongodb_data_product:
+    driver: local
+  mongodb_data_order:
+    driver: local
