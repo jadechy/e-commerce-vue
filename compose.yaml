@@ -8,7 +8,7 @@ services:
     volumes:
       - mongodb_data_auth:/data/db
     networks:
-      - ecom_network
+      - ecom_network 
 
   mongodb-product:
     image: mongo:latest
@@ -19,21 +19,24 @@ services:
     volumes:
       - mongodb_data_product:/data/db
     networks:
-      - ecom_network
+      - ecom_network 
 
   mongodb-order:
     image: mongo:latest
     container_name: mongodb-order
     restart: always
     ports:
-      - "27019:27017"  # MongoDB port expo
+      - "27019:27017"
     volumes:
       - mongodb_data_order:/data/db
     networks:
-      - ecom_network
+      - ecom_network 
 
   auth-service:
-    build: ./services/auth-service/
+    build: 
+      context: ./services/auth-service/
+      args:
+        TYPE: ${TYPE:-dev} 
     container_name: auth-service
     restart: always
     env_file:
@@ -41,14 +44,17 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - MONGO_URI=${MONGODB_URI}
+      - MONGO_URI=${MONGODB_URI} 
     depends_on:
       - mongodb-auth
     networks:
       - ecom_network
 
   product-service:
-    build: ./services/product-service/
+    build: 
+      context: ./services/product-service/
+      args:
+        TYPE: ${TYPE:-dev} 
     container_name: product-service
     restart: always
     env_file:
@@ -63,7 +69,10 @@ services:
       - ecom_network
 
   order-service:
-    build: ./services/order-service/
+    build: 
+      context: ./services/order-service/
+      args:
+        TYPE: ${TYPE:-dev} 
     container_name: order-service
     restart: always
     env_file:
