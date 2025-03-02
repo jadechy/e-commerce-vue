@@ -2,12 +2,12 @@ ARG TYPE=dev
 
 FROM node:18 AS build-dev
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 
 FROM node:18-alpine AS build-prod
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install --omit=dev 
 
 
@@ -21,10 +21,10 @@ FROM copy-${TYPE} AS copy
 
 FROM copy AS base
 COPY . .
-EXPOSE 3002
+EXPOSE 3000
 USER 1000
 
-FROM base AS final-dev  
+FROM base AS final-dev
 ENV ENV=dev
 CMD ["npm", "run", "dev"]
 
