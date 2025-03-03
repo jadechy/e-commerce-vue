@@ -39,9 +39,7 @@ services:
       replicas: 1 
 
   auth-service:
-    build: 
-      context: ./services/auth-service/
-      dockerfile: Dockerfile 
+    image: registry.cecoule.fr:5000/auth-prod:v1
     container_name: auth-service
     restart: always
     env_file:
@@ -56,9 +54,7 @@ services:
       - ecom_network
 
   product-service:
-    build: 
-      context: ./services/product-service/
-      dockerfile: Dockerfile 
+    image: registry.cecoule.fr:5000/product-prod:v1
     container_name: product-service
     restart: always
     env_file:
@@ -73,9 +69,7 @@ services:
       - ecom_network
 
   order-service:
-    build: 
-      context: ./services/order-service/
-      dockerfile: Dockerfile 
+    image: registry.cecoule.fr:5000/order-prod:v1
     container_name: order-service
     restart: always
     env_file:
@@ -90,9 +84,7 @@ services:
       - ecom_network
 
   frontend:
-    build: 
-      context: ./frontend/
-      dockerfile: Dockerfile 
+    image: registry.cecoule.fr:5000/frontend-prod:v1
     container_name: frontend
     restart: always
     env_file:
