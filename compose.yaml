@@ -87,7 +87,10 @@ services:
       - ecom_network
 
   frontend:
-    build: ./frontend/
+    build: 
+      context: ./frontend/
+      args:
+        TYPE: ${TYPE:-dev} 
     container_name: frontend
     restart: always
     env_file:
