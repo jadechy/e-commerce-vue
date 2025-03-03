@@ -35,8 +35,7 @@ services:
   auth-service:
     build: 
       context: ./services/auth-service/
-      args:
-        TYPE: ${TYPE:-dev} 
+      dockerfile: Dockerfile.dev
     container_name: auth-service
     restart: always
     env_file:
@@ -53,8 +52,7 @@ services:
   product-service:
     build: 
       context: ./services/product-service/
-      args:
-        TYPE: ${TYPE:-dev} 
+      dockerfile: Dockerfile.dev
     container_name: product-service
     restart: always
     env_file:
@@ -71,8 +69,7 @@ services:
   order-service:
     build: 
       context: ./services/order-service/
-      args:
-        TYPE: ${TYPE:-dev} 
+      dockerfile: Dockerfile.dev
     container_name: order-service
     restart: always
     env_file:
@@ -88,9 +85,8 @@ services:
 
   frontend:
     build: 
-      context: ./frontend/
-      args:
-        TYPE: ${TYPE:-dev} 
+      context: ./frontend/      
+      dockerfile: Dockerfile.dev
     container_name: frontend
     restart: always
     env_file:
