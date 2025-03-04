@@ -48,6 +48,12 @@ services:
       - MONGO_URI=${MONGODB_URI} 
     depends_on:
       - mongodb-auth
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - ecom_network
 
@@ -67,6 +73,12 @@ services:
       - MONGO_URI=${MONGODB_URI}
     depends_on:
       - mongodb-product
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - ecom_network
 
@@ -86,6 +98,12 @@ services:
       - MONGO_URI=${MONGODB_URI}
     depends_on:
       - mongodb-order
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - ecom_network
 
