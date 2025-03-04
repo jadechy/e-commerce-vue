@@ -4,10 +4,7 @@ FROM node:18 AS build-dev
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm install
- 
-FROM build-dev AS copy-dev
-WORKDIR /usr/src/app
-COPY --from=build-dev /usr/src/app .
+COPY . .
 
 FROM node:18-alpine AS build-prod
 WORKDIR /usr/src/app
@@ -15,6 +12,10 @@ COPY package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+
+FROM build-dev AS copy-dev
+WORKDIR /usr/src/app
+COPY --from=build-dev /usr/src/app .
 
 FROM build-prod AS copy-prod
 WORKDIR /usr/src/app
@@ -24,9 +25,9 @@ FROM copy-${TYPE} AS copy
 
 FROM copy AS base
 WORKDIR /usr/src/app
-COPY --from=copy-prod /usr/src/app/ .
+COPY --from=copy /usr/src/app/ .
 EXPOSE 8080
-USER 1000
+# USER 1000
 
 FROM base AS final-dev
 ENV ENV=dev
